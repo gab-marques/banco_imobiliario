@@ -204,23 +204,27 @@ function moverJogador(indiceJogador, casas) {
         // Mostrar informações da propriedade no modal
         const titulo = novaCasa.querySelector("h3")?.textContent || "Casa genérica";
         const descricao = novaCasa.querySelector("p")?.textContent || "Sem descrição.";
-        mostrarModal(titulo, descricao, jogador.nome);  // Passando o nome do jogador para o modal
+        mostrarModal(titulo, descricao, jogador.nome, indiceJogador+1, jogador.posicao);  // Passando o nome do jogador para o modal
     }
 
     atualizarCasaInicial();
 }
 
 
-function mostrarModal(titulo, descricao, nomeJogador) {
+function mostrarModal(titulo, descricao, nomeJogador, idJogador, idPropriedade) {
     const modal = document.getElementById("modal");
     const modalTitulo = document.getElementById("modalTitulo");
     const modalDescricao = document.getElementById("modalDescricao");
-    const modalJogador = document.getElementById("modalJogador");  // Novo campo para o nome do jogador
+    const modalJogador = document.getElementById("modalJogador");
     const fecharModal = document.getElementById("fecharModal");
 
     modalTitulo.textContent = titulo;
     modalDescricao.textContent = descricao;
-    modalJogador.textContent = `Jogador: ${nomeJogador}`;  // Exibe o nome do jogador
+    modalJogador.textContent = `Jogador: ${nomeJogador}`;
+    
+    // Armazenar no localStorage
+    localStorage.setItem('idJogador', idJogador);
+    localStorage.setItem('propriedadeSelecionada', idPropriedade);
 
     modal.style.display = "block";
 
@@ -234,6 +238,7 @@ function mostrarModal(titulo, descricao, nomeJogador) {
         }
     };
 }
+
 
 
 
@@ -253,31 +258,36 @@ function atualizarCasaInicial() {
     });
 }
 function comprarPropriedade() {
-    const idJogador = localStorage.getItem('idJogador'); // Obtém o ID do jogador atual do armazenamento local
-    const propriedade = localStorage.getItem('propriedadeSelecionada'); // Obtém o nome da propriedade selecionada
+    const idJogador = localStorage.getItem('idJogador'); // Obtém o ID do jogador atual
+    const idPropriedade = localStorage.getItem('propriedadeSelecionada'); // Obtém a propriedade selecionada
 
-    if (!idJogador || !propriedade) {
-        alert("Dados do jogador ou propriedade estão ausentes.");
+    if (!idJogador || idJogador === "undefined") {
+        alert("Erro: ID do jogador inválido.");
+        return;
+    }
+    if (!idPropriedade || idPropriedade === "undefined") {
+        alert("Erro: Propriedade inválida.");
         return;
     }
 
-    fetch("http://localhost:8080/comprarPropriedade", {
-        method: "POST",
+    fetch("http://localhost:8080/comprarPropriedade?idJogador="+idJogador+"&idPropriedade="+idPropriedade, {
+        method: "GET",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: `idJogador=${encodeURIComponent(idJogador)}&propriedade=${encodeURIComponent(propriedade)}`
-    })
+        })
     .then(response => response.text())
     .then(data => {
-        alert(data); // Exibe a mensagem de resposta
-        fecharModal(); // Fecha o modal após a compra
+        console.log("Resposta do Servidor:", data);
+        alert(data);
     })
     .catch(error => {
         console.error("Erro ao realizar a compra:", error);
         alert("Ocorreu um erro ao tentar realizar a compra.");
     });
 }
+
+
 function selecionarPropriedade(nomePropriedade) {
     localStorage.setItem('propriedadeSelecionada', nomePropriedade);
     abrirModalDesejaComprar(); // Exibe o modal

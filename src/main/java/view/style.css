@@ -1,0 +1,190 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f5;
+    
+}
+
+.tabuleiro {
+    display: grid;
+    /* grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(7, 1fr); */
+    width: 100%;  /* Ajuste conforme necessário */
+    height: 100%; /* Ajuste conforme necessário */
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    margin: 0 auto; /* Centraliza o tabuleiro */
+}
+
+.corner {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    border-radius: 12px;
+    padding: 8px;
+    transition: transform 0.2s;
+}
+
+.corner:hover {
+    transform: scale(1.1);
+}
+
+/* Mapeamento das esquinas */
+.start {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.jail {
+    grid-column: 1;
+    grid-row: 7;
+}
+
+.free-parking {
+    grid-column: 9;
+    grid-row: 7;
+}
+
+.go-jail {
+    grid-column: 9;
+    grid-row: 2;
+}
+
+.casa {
+    background-color: #3498db;
+    color: white;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    border-radius: 10px;
+    margin: 5px;
+    padding: 10px; /* Aumente o padding para casas maiores */
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.casa:hover {
+    background-color: #2980b9;
+    transform: scale(1.05);
+}
+
+/* Mapeamento das casas */
+.horizontal {
+    grid-column: span 1; /* Para as casas na parte superior e inferior */
+}
+
+.vertical {
+    grid-row: span 1; /* Para as casas laterais */
+}
+
+/* Aplique bordas e sombreados nas casas */
+.tabuleiro .horizontal, .tabuleiro .vertical {
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+} 
+#modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    display: flex; /* Flexbox ativado */
+    z-index: 9999; /* Garante que o modal fique sobre outros conteúdos */
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    margin: auto; /* Garantir que o conteúdo tenha margem automática */
+}
+
+#modal h2, #modal p {
+    margin: 10px 0;
+    color:rgb(0, 0, 0);
+}
+
+button {
+    margin-top: 20px;
+}
+
+.casa1{
+    background-image: url('images/expresso.png');
+    background-size: cover; /* Ajusta a imagem para cobrir a div */
+    background-position: center; /* Centraliza a imagem */
+}
+.casa2{
+    background-image: url('images/beco_diagonal.jpg');
+    background-size: cover; /* Ajusta a imagem para cobrir a div */
+    background-position: center; /* Centraliza a imagem */
+}
+.casa3{
+    background-image: url('images/cafe-tres-vassouras.jpg');
+    background-size: cover; /* Ajusta a imagem para cobrir a div */
+    background-position: center; /* Centraliza a imagem */
+}
+.casa4{
+    background-image: url('images/floresta.jpg');
+    background-size: cover; /* Ajusta a imagem para cobrir a div */
+    background-position: center; /* Centraliza a imagem */
+}
+.casa6{
+    background-image: url('images/cemiterio.png');
+    background-size: cover; /* Ajusta a imagem para cobrir a div */
+    background-position: center; /* Centraliza a imagem */
+}
+.casa7{
+    background-image: url('images/casa-weasly.png');
+    background-size: cover; /* Ajusta a imagem para cobrir a div */
+    background-position: center; /* Centraliza a imagem */
+}
+.casa8{
+    background-image: url('images/fazenda-abobora.png');
+    background-size: cover; /* Ajusta a imagem para cobrir a div */
+    background-position: center; /* Centraliza a imagem */
+}
+.casa9{
+    background-image: url('images/lufa.png');
+    background-size: cover; /* Ajusta a imagem para cobrir a div */
+    background-position: center; /* Centraliza a imagem */
+}
+.casa10{
+    background-image: url('images/expresso.png');
+    background-size: cover; /* Ajusta a imagem para cobrir a div */
+    background-position: center; /* Centraliza a imagem */
+}
+.casa11{
+    background-image: url('images/ministerio_magia.png');
+    background-size: cover; /* Ajusta a imagem para cobrir a div */
+    background-position: center; /* Centraliza a imagem */
+}
+.casa12{
+    background-image: url('images/sala-das-pocoes.png');
+    background-size: cover; /* Ajusta a imagem para cobrir a div */
+    background-position: center; /* Centraliza a imagem */
+}
+
+
+.casa h3,p{
+    font-size: 20x;
+    color:rgb(255, 255, 255);
+    font-weight: bold;
+}

@@ -1,0 +1,4 @@
+Nome: Player 1
+Saldo: 1200.0
+ID: 1
+Propriedades: Floresta Proibida (ID: 4, Preço: 300.0); Hogwarts (ID: 1, Preço: 500.0); 

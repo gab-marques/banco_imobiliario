@@ -1,0 +1,4 @@
+Nome: Player 2
+Saldo: 2000.0
+ID: 2
+

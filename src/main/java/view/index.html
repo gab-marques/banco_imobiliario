@@ -1,0 +1,316 @@
+<!--<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Tabuleiro com localStorage</title>
+</head>
+<body>
+    <h1>Jogo de Tabuleiro</h1>
+    
+    <div id="status"></div>
+    <button onclick="salvarProgresso()">Salvar Progresso</button>
+    <button onclick="carregarProgresso()">Carregar Progresso</button>
+
+    <script>
+        let jogo = {
+            jogador1: { nome: "Jogador 1", saldo: 1000 },
+            jogador2: { nome: "Jogador 2", saldo: 500 }
+        };
+
+        // Função para salvar o progresso do jogo
+        function salvarProgresso() {
+            localStorage.setItem('jogo', JSON.stringify(jogo));
+            alert("Progresso salvo!");
+        }
+
+        // Função para carregar o progresso do jogo
+        function carregarProgresso() {
+            const progresso = localStorage.getItem('jogo');
+            if (progresso) {
+                jogo = JSON.parse(progresso);
+                exibirStatus();
+            } else {
+                alert("Nenhum progresso encontrado.");
+            }
+        }
+
+        // Função para exibir o status do jogo
+        function exibirStatus() {
+            document.getElementById("status").textContent = `
+                ${jogo.jogador1.nome}: R$${jogo.jogador1.saldo}
+                ${jogo.jogador2.nome}: R$${jogo.jogador2.saldo}
+            `;
+        }
+
+        // Exibir status inicial
+        exibirStatus();
+    </script>
+</body>
+</html>--> 
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco Imobiliário</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div id="modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span id="fecharModal" class="close">&times;</span>
+            <h2 id="modalTitulo"></h2>
+            <p id="modalDescricao"></p>
+            <p id="modalJogador"></p> 
+            <button onclick="comprarPropriedade()">Comprar</button>
+        </div>
+    </div>
+    
+    
+    <div id="inicio">
+        <h1>Bem-vindo ao Banco Imobiliário</h1>
+        <label for="numJogadores">Escolha a quantidade de jogadores:</label>
+        <input type="number" id="numJogadores" min="2" max="4" value="2">
+        <button onclick="iniciarJogo()">Iniciar Jogo</button>
+    </div>
+    <div class="tabuleiro" id="tabuleiro" style="display: none;">
+        <!-- Esquinas -->
+        <div class="corner start">inicio
+        <div id="casa0"></div></div>
+        <div class="corner jail">Prisão</div>
+        <div id= "" class="corner free-parking">Estacionamento</div>
+        <div id= "" class="corner go-jail">Vá para a Prisão</div>  
+        <h1>Jogar Dados</h1>
+        <button onclick="rolarDados()">Rolar Dados</button>
+        <div id="resultado"></div> 
+  
+        <!-- Casas da parte direita -->
+        <div id="casa1" class="casa round vertical casa1" style="grid-row: 2;" ></div>
+        <div id="casa2" class="casa round vertical casa2" style="grid-row: 3;"></div>
+        <div id="casa3" class="casa round vertical casa3" style="grid-row: 4;"></div>
+        <div id="casa4" class="casa round vertical casa4" style="grid-row: 5;"></div>
+        
+        <!-- Casas da parte inferior -->
+        <div id="casa6" class="casa round horizontal casa6" style="grid-column: 2; grid-row: 7;"></div>
+        <div id="casa7" class="casa round horizontal casa7" style="grid-column: 3; grid-row: 7;"></div>
+        <div id="casa8" class="casa round horizontal casa8" style="grid-column: 4; grid-row: 7;"></div>
+        <div id="casa9" class="casa round horizontal casa9" style="grid-column: 5; grid-row: 7;"></div>
+        <div id="casa10" class="casa round horizontal casa10" style="grid-column: 6; grid-row: 7;"></div>
+        <div id="casa11" class="casa round horizontal casa11" style="grid-column: 7; grid-row: 7;"></div>   
+        <div id="casa12" class="casa round horizontal casa12" style="grid-column: 8; grid-row: 7;"></div>
+
+          <!-- Casas da parte esquerda -->
+          <div id="casa14" class="casa round vertical" style="grid-column: 9; grid-row: 3;"></div>
+          <div id="casa15" class="casa round vertical" style="grid-column: 9; grid-row: 4;"></div>
+          <div id="casa16" class="casa round vertical" style="grid-column: 9; grid-row: 5;"></div>
+         <!-- Casas da parte superior -->
+         <div id="casa18" class="casa round horizontal" style="grid-column: 2;"></div>
+         <div id="casa19" class="casa round horizontal" style="grid-column: 3;"></div>
+         <div id="casa20" class="casa round horizontal" style="grid-column: 4;"></div>
+         <div id="casa21" class="casa round horizontal" style="grid-column: 5;"></div>
+         <div id="casa22" class="casa round horizontal" style="grid-column: 6;"></div>
+         <div id="casa23" class="casa round horizontal" style="grid-column: 7;"></div>
+         <div id="casa24" class="casa round horizontal" style="grid-column: 8;"></div>   
+    </div>
+
+    <script>
+        let jogadores = [];
+let jogadorAtual = 0; // Indica o jogador que está na vez
+
+function iniciarJogo() {
+    console.log("Função iniciarJogo chamada");
+    const numJogadores = document.getElementById("numJogadores").value;
+    fetch("/iniciarJogo", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ numJogadores: numJogadores }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            jogadores = data.jogadores.map((jogador) => ({
+                ...jogador,
+                posicao: 0, // Todos os jogadores começam na posição inicial
+            }));
+            mostrarJogadores();
+            document.getElementById("inicio").style.display = "none";
+            document.getElementById("tabuleiro").style.display = "grid";
+            document.getElementById("jogadores").style.display = "block";
+        })
+        .catch((error) => {
+            console.error("Erro ao iniciar o jogo:", error);
+        });
+}
+
+function mostrarJogadores() {
+    const listaJogadores = document.getElementById("casa0");
+    listaJogadores.innerHTML = "";
+    jogadores.forEach((jogador) => {
+        const divJogador = document.createElement("div");
+        divJogador.textContent = `${jogador.nome}: R$${jogador.saldo}`;
+        listaJogadores.appendChild(divJogador);
+    });
+}
+
+function rolarDados() {
+    fetch("/jogarDados", { method: "GET" })
+        .then((response) => response.text())
+        .then((data) => {
+            document.getElementById("resultado").textContent = data;
+
+            const resultado = data.match(/\d+/g); // Captura os números do resultado
+            const dado1 = parseInt(resultado[0], 10);
+            const dado2 = parseInt(resultado[1], 10);
+            const total = dado1;
+
+            moverJogador(jogadorAtual, total);
+
+            // Atualiza para o próximo jogador
+            jogadorAtual = (jogadorAtual + 1) % jogadores.length;
+        })
+        .catch((error) => {
+            console.error("Erro ao rolar os dados:", error);
+        });
+}
+
+function moverJogador(indiceJogador, casas) {
+    const jogador = jogadores[indiceJogador];
+    const posicaoAtual = jogador.posicao;
+    const novaPosicao = (posicaoAtual + casas) % 24;
+
+    // Remove o jogador da posição atual
+    const casaAtual = document.getElementById(`casa${posicaoAtual}`);
+    if (casaAtual) {
+        const jogadorDiv = casaAtual.querySelector(`.jogador-${indiceJogador}`);
+        if (jogadorDiv) {
+            jogadorDiv.remove();
+        }
+    }
+
+    // Atualiza a posição do jogador
+    jogador.posicao = novaPosicao;
+
+    // Adiciona o jogador na nova posição
+    const novaCasa = document.getElementById(`casa${novaPosicao}`);
+    if (novaCasa) {
+        const jogadorDiv = document.createElement("div");
+        jogadorDiv.className = `jogador jogador-${indiceJogador}`;
+        jogadorDiv.textContent = jogador.nome;
+        novaCasa.appendChild(jogadorDiv);
+
+        // Mostrar informações da propriedade no modal
+        const titulo = novaCasa.querySelector("h3")?.textContent || "Casa genérica";
+        const descricao = novaCasa.querySelector("p")?.textContent || "Sem descrição.";
+        mostrarModal(titulo, descricao, jogador.nome);  // Passando o nome do jogador para o modal
+    }
+
+    atualizarCasaInicial();
+}
+
+
+function mostrarModal(titulo, descricao, nomeJogador) {
+    const modal = document.getElementById("modal");
+    const modalTitulo = document.getElementById("modalTitulo");
+    const modalDescricao = document.getElementById("modalDescricao");
+    const modalJogador = document.getElementById("modalJogador");  // Novo campo para o nome do jogador
+    const fecharModal = document.getElementById("fecharModal");
+
+    modalTitulo.textContent = titulo;
+    modalDescricao.textContent = descricao;
+    modalJogador.textContent = `Jogador: ${nomeJogador}`;  // Exibe o nome do jogador
+
+    modal.style.display = "block";
+
+    fecharModal.onclick = () => {
+        modal.style.display = "none";
+    };
+
+    window.onclick = (event) => {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    };
+}
+
+
+
+// Função para atualizar os jogadores na casa inicial
+function atualizarCasaInicial() {
+    const casaInicial = document.getElementById("casa0");
+    casaInicial.innerHTML = ""; // Limpa o conteúdo atual
+
+    jogadores.forEach((jogador, index) => {
+        if (jogador.posicao === 0) {
+            // Adiciona apenas jogadores que ainda estão na casa inicial
+            const jogadorDiv = document.createElement("div");
+            jogadorDiv.className = `jogador jogador-${index}`;
+            jogadorDiv.textContent = `${jogador.nome}: R$${jogador.saldo}`;
+            casaInicial.appendChild(jogadorDiv);
+        }
+    });
+}
+function comprarPropriedade() {
+    const idJogador = localStorage.getItem('idJogador'); // Obtém o ID do jogador atual do armazenamento local
+    const propriedade = localStorage.getItem('propriedadeSelecionada'); // Obtém o nome da propriedade selecionada
+
+    if (!idJogador || !propriedade) {
+        alert("Dados do jogador ou propriedade estão ausentes.");
+        return;
+    }
+
+    fetch("http://localhost:8080/comprarPropriedade", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `idJogador=${encodeURIComponent(idJogador)}&propriedade=${encodeURIComponent(propriedade)}`
+    })
+    .then(response => response.text())
+    .then(data => {
+        alert(data); // Exibe a mensagem de resposta
+        fecharModal(); // Fecha o modal após a compra
+    })
+    .catch(error => {
+        console.error("Erro ao realizar a compra:", error);
+        alert("Ocorreu um erro ao tentar realizar a compra.");
+    });
+}
+function selecionarPropriedade(nomePropriedade) {
+    localStorage.setItem('propriedadeSelecionada', nomePropriedade);
+    abrirModalDesejaComprar(); // Exibe o modal
+}
+
+function abrirModalDesejaComprar() {
+    document.getElementById("modalDesejaComprar").style.display = "block";
+}
+
+function fecharModal() {
+    document.getElementById("modalDesejaComprar").style.display = "none";
+}
+
+
+  // Função para carregar as propriedades
+    function carregarPropriedades() {
+            fetch('/propriedades')  // Requisição ao endpoint que retorna as propriedades
+                .then(response => response.json())
+                .then(propriedades => {
+                    // Preencher as casas com os dados das propriedades
+                    propriedades.forEach((propriedade, index) => {
+                        const casa = document.getElementById(`casa${index + 1}`);
+                            if (casa) {
+                                casa.innerHTML = ` 
+                                <h3>${propriedade.nome}</h3>
+                                <p>Preço: R$${propriedade.preco}</p>
+                            `;
+                            }
+                        });
+                })
+                .catch(error => console.error('Erro ao carregar as propriedades:', error));
+    }
+    window.onload = carregarPropriedades;
+    </script>
+</body>
+</html>

@@ -65,6 +65,8 @@
             <p id="modalDescricao"></p>
             <p id="modalJogador"></p> 
             <button onclick="comprarPropriedade()">Comprar</button>
+            <button id="pagarAluguelBtn">Pagar Aluguel</button>
+
         </div>
     </div>
     
@@ -79,9 +81,9 @@
         <!-- Esquinas -->
         <div class="corner start">inicio
         <div id="casa0"></div></div>
-        <div class="corner jail">Prisão</div>
-        <div id= "" class="corner free-parking">Estacionamento</div>
-        <div id= "" class="corner go-jail">Vá para a Prisão</div>  
+        <div id = "casa5"class="corner jail">Prisão</div>
+        <div id= "casa13" class="corner free-parking">Estacionamento</div>
+        <div id= "casa17" class="corner go-jail">Vá para a Prisão</div>  
         <h1>Jogar Dados</h1>
         <button onclick="rolarDados()">Rolar Dados</button>
         <div id="resultado"></div> 
@@ -286,6 +288,43 @@ function comprarPropriedade() {
         alert("Ocorreu um erro ao tentar realizar a compra.");
     });
 }
+function pagarAluguel() {
+    const idJogador = localStorage.getItem('idJogador'); // Obtém o ID do jogador atual
+    const idPropriedade = localStorage.getItem('propriedadeSelecionada'); // Obtém a propriedade selecionada
+
+    if (!idJogador || idJogador === "undefined") {
+        alert("Erro: ID do jogador inválido.");
+        return;
+    }
+    if (!idPropriedade || idPropriedade === "undefined") {
+        alert("Erro: Propriedade inválida.");
+        return;
+    }
+
+    fetch("http://localhost:8080/pagarAluguel?idJogador="+idJogador+"&idPropriedade="+idPropriedade, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log("Resposta do Servidor:", data);
+        alert(data);
+    })
+    .catch(error => {
+        console.error("Erro ao pagar o aluguel:", error);
+        alert("Ocorreu um erro ao tentar pagar o aluguel.");
+    });
+}
+const pagarAluguelBtn = document.getElementById("pagarAluguelBtn");
+
+pagarAluguelBtn.onclick = () => {
+    pagarAluguel();
+    const modal = document.getElementById("modal");
+    modal.style.display = "none";
+};
+
 
 
 function selecionarPropriedade(nomePropriedade) {
@@ -303,23 +342,29 @@ function fecharModal() {
 
 
   // Função para carregar as propriedades
-    function carregarPropriedades() {
-            fetch('/propriedades')  // Requisição ao endpoint que retorna as propriedades
-                .then(response => response.json())
-                .then(propriedades => {
-                    // Preencher as casas com os dados das propriedades
-                    propriedades.forEach((propriedade, index) => {
-                        const casa = document.getElementById(`casa${index + 1}`);
-                            if (casa) {
-                                casa.innerHTML = ` 
-                                <h3>${propriedade.nome}</h3>
-                                <p>Preço: R$${propriedade.preco}</p>
-                            `;
-                            }
-                        });
-                })
-                .catch(error => console.error('Erro ao carregar as propriedades:', error));
-    }
+  function carregarPropriedades() {
+    fetch('/propriedades')  // Requisição ao endpoint que retorna as propriedades
+        .then(response => response.json())
+        .then(propriedades => {
+            // Preencher as casas com os dados das propriedades
+            propriedades.forEach((propriedade, index) => {
+                const casa = document.getElementById(`casa${index + 1}`);
+                if (casa) {
+                    if ([5, 13, 17].includes(index + 1)) {
+                        casa.innerHTML = ` 
+                            <h3>${propriedade.nome}</h3>
+                        `; // Apenas o nome
+                    } else {
+                        casa.innerHTML = ` 
+                            <h3>${propriedade.nome}</h3>
+                            <p>Preço: R$${propriedade.preco}</p>
+                        `; // Nome e descrição
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Erro ao carregar as propriedades:', error));
+}
     window.onload = carregarPropriedades;
     </script>
 </body>

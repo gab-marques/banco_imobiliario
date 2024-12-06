@@ -19,6 +19,7 @@ public class Propriedade {
         this.comprador = null; 
         this.id = id;
     }
+  
 
     public String getNome() {
         return nome;
@@ -45,6 +46,9 @@ public class Propriedade {
     }
     public Jogador getComprador() {
         return this.comprador;
+    }
+    public void setComprador(Jogador comprador) {
+        this.comprador = comprador;
     }
      // Método para hipotecar a propriedade
      public double hipotecar() {

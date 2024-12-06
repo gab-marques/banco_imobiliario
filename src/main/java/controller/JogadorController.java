@@ -14,7 +14,8 @@ public class JogadorController {
                 // Adiciona a propriedade diretamente à lista do jogador
                 jogador.adicionarPropriedade(propriedade);
                 // Marca a propriedade como comprada
-                propriedade.setComprada(true);    
+                propriedade.setComprada(true); 
+                propriedade.setComprador(jogador);   
                 // Salva o jogador atualizado
                 jogador.salvarNoArquivo();
                 

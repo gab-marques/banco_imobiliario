@@ -3,6 +3,7 @@ import controller.HomeController;
 import controller.IniciarJogoHandler;
 import controller.JogarDadosHandler;
 import controller.PropriedadeHandler;
+import controller.CobrarAluguelHandler;
 import controller.ComprarPropriedadeHandler;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -18,6 +19,7 @@ public class ServidorHTTP {
         server.createContext("/comprarPropriedade", new ComprarPropriedadeHandler()); // Rota para comprar propriedade
         server.createContext("/propriedades", new PropriedadeHandler()); 
         server.createContext("/iniciarJogo", new IniciarJogoHandler());
+        server.createContext("/pagarAluguel", new CobrarAluguelHandler());
         server.setExecutor(null); // Usa o executor padrão
         System.out.println("Servidor HTTP iniciado na porta 8080...");
         server.start();

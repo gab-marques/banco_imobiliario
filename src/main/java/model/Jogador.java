@@ -213,18 +213,17 @@ public void carregarJogador(String fileName) {
         if (valor > 0) {
             saldo += valor;
             System.out.println("Você adicionou R$" + valor + ". Novo saldo: R$" + saldo);
+            salvarNoArquivo();
         } else {
             System.out.println("Valor inválido para adicionar.");
         }
     }
         public void removerDinheiro(double valor) {
-        if (valor > 0 && valor <= saldo) {
-            saldo -= valor;
-            System.out.println("Você removeu R$" + valor + ". Novo saldo: R$" + saldo);
-        } else if (valor > saldo) {
-            System.out.println("Saldo insuficiente para remover esse valor.");
+        if (this.saldo >= valor) {
+            this.saldo -= valor;
+            salvarNoArquivo(); // Salva o jogador após modificar o dinheiro
         } else {
-            System.out.println("Valor inválido para remover.");
+            System.err.println("Jogador não tem dinheiro suficiente.");
         }
     }
         public void hipotecarPropriedade(String nomePropriedade) {

@@ -15,7 +15,7 @@ public class PropriedadeHandler implements HttpHandler {
         propriedades.add(new Propriedade("Beco Diagonal", 350, 2));
         propriedades.add(new Propriedade("Café do Três Vassouras", 250, 3));
         propriedades.add(new Propriedade("Floresta Proibida", 300, 4));
-        propriedades.add(new Propriedade("Ministério da Magia", 600, 5));
+        propriedades.add(new Propriedade("Prisão", -20, 5));
         propriedades.add(new Propriedade("Cemitério de Little Hangleton", 350, 6));
         propriedades.add(new Propriedade("Vila dos Weasley", 300, 7));
         propriedades.add(new Propriedade("Fazenda de Abóbora", 250, 8));
@@ -23,11 +23,11 @@ public class PropriedadeHandler implements HttpHandler {
         propriedades.add(new Propriedade("O Expresso", 350, 10));
         propriedades.add(new Propriedade("Ministério da Magia", 550, 11));
         propriedades.add(new Propriedade("Sala de Poções", 400, 12));
-        propriedades.add(new Propriedade("Casa de Sirius Black", 450, 13));
+        propriedades.add(new Propriedade("Estacionamento",-5, 13));
         propriedades.add(new Propriedade("A toca", 450, 14));
         propriedades.add(new Propriedade("Quarto em baixo da escada", 450, 15));
         propriedades.add(new Propriedade("Casa de Sirius Black", 450, 16));
-        propriedades.add(new Propriedade("Casa do Hagrid", 450, 17));
+        propriedades.add(new Propriedade("Prisão", -50,17));
         propriedades.add(new Propriedade("Quarto do Dobbly", 450, 18));
         propriedades.add(new Propriedade("Banco Gringotes", 550, 19));
         propriedades.add(new Propriedade("Câmara Secreta", 500, 20));

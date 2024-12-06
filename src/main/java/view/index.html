@@ -1,54 +1,3 @@
-<!--<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jogo de Tabuleiro com localStorage</title>
-</head>
-<body>
-    <h1>Jogo de Tabuleiro</h1>
-    
-    <div id="status"></div>
-    <button onclick="salvarProgresso()">Salvar Progresso</button>
-    <button onclick="carregarProgresso()">Carregar Progresso</button>
-
-    <script>
-        let jogo = {
-            jogador1: { nome: "Jogador 1", saldo: 1000 },
-            jogador2: { nome: "Jogador 2", saldo: 500 }
-        };
-
-        // Função para salvar o progresso do jogo
-        function salvarProgresso() {
-            localStorage.setItem('jogo', JSON.stringify(jogo));
-            alert("Progresso salvo!");
-        }
-
-        // Função para carregar o progresso do jogo
-        function carregarProgresso() {
-            const progresso = localStorage.getItem('jogo');
-            if (progresso) {
-                jogo = JSON.parse(progresso);
-                exibirStatus();
-            } else {
-                alert("Nenhum progresso encontrado.");
-            }
-        }
-
-        // Função para exibir o status do jogo
-        function exibirStatus() {
-            document.getElementById("status").textContent = `
-                ${jogo.jogador1.nome}: R$${jogo.jogador1.saldo}
-                ${jogo.jogador2.nome}: R$${jogo.jogador2.saldo}
-            `;
-        }
-
-        // Exibir status inicial
-        exibirStatus();
-    </script>
-</body>
-</html>--> 
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -64,12 +13,10 @@
             <h2 id="modalTitulo"></h2>
             <p id="modalDescricao"></p>
             <p id="modalJogador"></p> 
-            <button onclick="comprarPropriedade()">Comprar</button>
-            <button id="pagarAluguelBtn">Pagar Aluguel</button>
-
+            <button id="comprar" style="display: none;" onclick="comprarPropriedade()">Comprar</button>
+            <button id="pagarAluguelBtn" style="display: none;" >Pagar Aluguel</button>
         </div>
-    </div>
-    
+    </div>    
     
     <div id="inicio">
         <h1>Bem-vindo ao Banco Imobiliário</h1>
@@ -84,16 +31,18 @@
         <div id = "casa5"class="corner jail">Prisão</div>
         <div id= "casa13" class="corner free-parking">Estacionamento</div>
         <div id= "casa17" class="corner go-jail">Vá para a Prisão</div>  
-        <h1>Jogar Dados</h1>
-        <button onclick="rolarDados()">Rolar Dados</button>
-        <div id="resultado"></div> 
-  
+         <!-- Container para o botão centralizado -->
+         <div class="container-roldados">
+            <button class = "botao-dado" onclick="rolarDados()">Rolar Dados</button>
+            <div class = "resultado" id="resultado"></div>
+        </div>
+        
         <!-- Casas da parte direita -->
         <div id="casa1" class="casa round vertical casa1" style="grid-row: 2;" ></div>
         <div id="casa2" class="casa round vertical casa2" style="grid-row: 3;"></div>
         <div id="casa3" class="casa round vertical casa3" style="grid-row: 4;"></div>
         <div id="casa4" class="casa round vertical casa4" style="grid-row: 5;"></div>
-        
+              
         <!-- Casas da parte inferior -->
         <div id="casa6" class="casa round horizontal casa6" style="grid-column: 2; grid-row: 7;"></div>
         <div id="casa7" class="casa round horizontal casa7" style="grid-column: 3; grid-row: 7;"></div>
@@ -104,19 +53,20 @@
         <div id="casa12" class="casa round horizontal casa12" style="grid-column: 8; grid-row: 7;"></div>
 
           <!-- Casas da parte esquerda -->
-          <div id="casa14" class="casa round vertical" style="grid-column: 9; grid-row: 3;"></div>
+          <div id="casa18" class="casa round vertical" style="grid-column: 9; grid-row: 2;"></div>
+          <div id="casa16" class="casa round vertical" style="grid-column: 9; grid-row: 3;"></div>
           <div id="casa15" class="casa round vertical" style="grid-column: 9; grid-row: 4;"></div>
-          <div id="casa16" class="casa round vertical" style="grid-column: 9; grid-row: 5;"></div>
+          <div id="casa14" class="casa round vertical" style="grid-column: 9; grid-row: 5;"></div>
          <!-- Casas da parte superior -->
-         <div id="casa18" class="casa round horizontal" style="grid-column: 2;"></div>
-         <div id="casa19" class="casa round horizontal" style="grid-column: 3;"></div>
-         <div id="casa20" class="casa round horizontal" style="grid-column: 4;"></div>
-         <div id="casa21" class="casa round horizontal" style="grid-column: 5;"></div>
-         <div id="casa22" class="casa round horizontal" style="grid-column: 6;"></div>
-         <div id="casa23" class="casa round horizontal" style="grid-column: 7;"></div>
-         <div id="casa24" class="casa round horizontal" style="grid-column: 8;"></div>   
+         <div id="casa19" class="casa round horizontal" style="grid-column: 2;"></div>
+         <div id="casa20" class="casa round horizontal" style="grid-column: 3;"></div>
+         <div id="casa21" class="casa round horizontal" style="grid-column: 4;"></div>
+         <div id="casa22" class="casa round horizontal" style="grid-column: 5;"></div>
+         <div id="casa23" class="casa round horizontal" style="grid-column: 6;"></div>
+         <div id="casa24" class="casa round horizontal" style="grid-column: 7;"></div>
+         <div id="casa25" class="casa round horizontal" style="grid-column: 8;"></div>   
     </div>
-
+   
     <script>
         let jogadores = [];
 let jogadorAtual = 0; // Indica o jogador que está na vez
@@ -191,10 +141,8 @@ function moverJogador(indiceJogador, casas) {
             jogadorDiv.remove();
         }
     }
-
     // Atualiza a posição do jogador
     jogador.posicao = novaPosicao;
-
     // Adiciona o jogador na nova posição
     const novaCasa = document.getElementById(`casa${novaPosicao}`);
     if (novaCasa) {
@@ -202,8 +150,6 @@ function moverJogador(indiceJogador, casas) {
         jogadorDiv.className = `jogador jogador-${indiceJogador}`;
         jogadorDiv.textContent = jogador.nome;
         novaCasa.appendChild(jogadorDiv);
-
-        // Mostrar informações da propriedade no modal
         const titulo = novaCasa.querySelector("h3")?.textContent || "Casa genérica";
         const descricao = novaCasa.querySelector("p")?.textContent || "Sem descrição.";
         mostrarModal(titulo, descricao, jogador.nome, indiceJogador+1, jogador.posicao);  // Passando o nome do jogador para o modal
@@ -212,21 +158,40 @@ function moverJogador(indiceJogador, casas) {
     atualizarCasaInicial();
 }
 
-
 function mostrarModal(titulo, descricao, nomeJogador, idJogador, idPropriedade) {
     const modal = document.getElementById("modal");
     const modalTitulo = document.getElementById("modalTitulo");
     const modalDescricao = document.getElementById("modalDescricao");
     const modalJogador = document.getElementById("modalJogador");
     const fecharModal = document.getElementById("fecharModal");
+    const botaoAcao = document.getElementById("botaoAcao"); 
 
     modalTitulo.textContent = titulo;
     modalDescricao.textContent = descricao;
-    modalJogador.textContent = `Jogador: ${nomeJogador}`;
-    
-    // Armazenar no localStorage
+    modalJogador.textContent = nomeJogador;
     localStorage.setItem('idJogador', idJogador);
     localStorage.setItem('propriedadeSelecionada', idPropriedade);
+    fetch('/propriedades')
+        .then(response => response.json())
+        .then(propriedades => {
+            const propriedade = propriedades.find(p => p.id === idPropriedade);
+
+            if (propriedade) {
+                if (propriedade.comprada === false) {
+                    comprar.style.display = "block"    
+                    pagarAluguelBtn.style.display = "none"
+                } else {
+                    comprar.style.display = "none"
+                    pagarAluguelBtn.style.display = "block"
+                }
+            } else {
+                
+                console.error("Propriedade não encontrada");
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao buscar propriedades:', error);
+        });
 
     modal.style.display = "block";
 
@@ -241,17 +206,11 @@ function mostrarModal(titulo, descricao, nomeJogador, idJogador, idPropriedade) 
     };
 }
 
-
-
-
-// Função para atualizar os jogadores na casa inicial
 function atualizarCasaInicial() {
     const casaInicial = document.getElementById("casa0");
-    casaInicial.innerHTML = ""; // Limpa o conteúdo atual
-
+    casaInicial.innerHTML = ""; 
     jogadores.forEach((jogador, index) => {
         if (jogador.posicao === 0) {
-            // Adiciona apenas jogadores que ainda estão na casa inicial
             const jogadorDiv = document.createElement("div");
             jogadorDiv.className = `jogador jogador-${index}`;
             jogadorDiv.textContent = `${jogador.nome}: R$${jogador.saldo}`;
@@ -260,8 +219,8 @@ function atualizarCasaInicial() {
     });
 }
 function comprarPropriedade() {
-    const idJogador = localStorage.getItem('idJogador'); // Obtém o ID do jogador atual
-    const idPropriedade = localStorage.getItem('propriedadeSelecionada'); // Obtém a propriedade selecionada
+    const idJogador = localStorage.getItem('idJogador'); 
+    const idPropriedade = localStorage.getItem('propriedadeSelecionada'); 
 
     if (!idJogador || idJogador === "undefined") {
         alert("Erro: ID do jogador inválido.");
@@ -289,8 +248,8 @@ function comprarPropriedade() {
     });
 }
 function pagarAluguel() {
-    const idJogador = localStorage.getItem('idJogador'); // Obtém o ID do jogador atual
-    const idPropriedade = localStorage.getItem('propriedadeSelecionada'); // Obtém a propriedade selecionada
+    const idJogador = localStorage.getItem('idJogador'); 
+    const idPropriedade = localStorage.getItem('propriedadeSelecionada'); 
 
     if (!idJogador || idJogador === "undefined") {
         alert("Erro: ID do jogador inválido.");
@@ -326,10 +285,9 @@ pagarAluguelBtn.onclick = () => {
 };
 
 
-
 function selecionarPropriedade(nomePropriedade) {
     localStorage.setItem('propriedadeSelecionada', nomePropriedade);
-    abrirModalDesejaComprar(); // Exibe o modal
+    abrirModalDesejaComprar(); 
 }
 
 function abrirModalDesejaComprar() {
@@ -343,22 +301,22 @@ function fecharModal() {
 
   // Função para carregar as propriedades
   function carregarPropriedades() {
-    fetch('/propriedades')  // Requisição ao endpoint que retorna as propriedades
+    fetch('/propriedades')  
         .then(response => response.json())
         .then(propriedades => {
-            // Preencher as casas com os dados das propriedades
             propriedades.forEach((propriedade, index) => {
                 const casa = document.getElementById(`casa${index + 1}`);
                 if (casa) {
                     if ([5, 13, 17].includes(index + 1)) {
                         casa.innerHTML = ` 
-                            <h3>${propriedade.nome}</h3>
-                        `; // Apenas o nome
+                            <p>${propriedade.nome}</p>
+
+                        `;
                     } else {
                         casa.innerHTML = ` 
                             <h3>${propriedade.nome}</h3>
                             <p>Preço: R$${propriedade.preco}</p>
-                        `; // Nome e descrição
+                        `; 
                     }
                 }
             });

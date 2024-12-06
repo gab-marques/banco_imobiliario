@@ -1,4 +1,5 @@
 body {
+    overflow: hidden;
     font-family: 'Poppins', sans-serif;
     display: flex;
     justify-content: center;
@@ -10,15 +11,13 @@ body {
 
 .tabuleiro {
     display: grid;
-    /* grid-template-columns: repeat(9, 1fr);
-    grid-template-rows: repeat(7, 1fr); */
-    width: 100%;  /* Ajuste conforme necessário */
-    height: 100%; /* Ajuste conforme necessário */
+    width: 100%;  
+    height: 100%; 
     background-color: #fff;
     border-radius: 20px;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     padding: 10px;
-    margin: 0 auto; /* Centraliza o tabuleiro */
+    margin: 0 auto; 
 }
 
 .corner {
@@ -28,9 +27,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 18px;
-    border-radius: 12px;
-    padding: 8px;
+    font-size: 15px;
+    border-radius: 10px;
+    padding: 3px;
     transition: transform 0.2s;
 }
 
@@ -56,7 +55,7 @@ body {
 
 .go-jail {
     grid-column: 9;
-    grid-row: 2;
+    grid-row: 1;
 }
 
 .casa {
@@ -69,7 +68,7 @@ body {
     font-size: 12px;
     border-radius: 10px;
     margin: 5px;
-    padding: 10px; /* Aumente o padding para casas maiores */
+    padding: 8px; /* Aumente o padding para casas maiores */
     transition: background-color 0.3s, transform 0.3s;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -187,4 +186,51 @@ button {
     font-size: 20x;
     color:rgb(255, 255, 255);
     font-weight: bold;
+}
+
+   /* CSS para centralizar o botão de rolar dados */
+   .container-roldados {
+    position: absolute;
+    top: 50%; /* Centraliza verticalmente */
+    left: 50%; /* Centraliza horizontalmente */
+    transform: translate(-50%, -50%); /* Ajusta para garantir centralização exata */
+}
+
+.botao-dado{
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #4CAF50; /* Cor verde */
+    border: none;
+    border-radius: 50px; /* Bordas arredondadas */
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+}
+.botao-dado:hover{
+    background-color: #45a049;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
+    transform: scale(1.1); 
+}
+
+.botao-dado:active{
+    background-color: #388e3c; 
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
+}
+
+.resultado{
+    background: linear-gradient(135deg, #6a1b9a, #8e24aa); /* Gradiente de roxo */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 15px; /* Bordas arredondadas */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    max-width: 200px;
+    margin: 20px auto;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }

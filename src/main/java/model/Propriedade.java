@@ -8,6 +8,7 @@ public class Propriedade {
     private boolean hipotecada;
     private boolean comprada;
     private Jogador comprador;
+    private int casa;
     
 
     public Propriedade(String nome, double preco, int id) {
@@ -18,6 +19,7 @@ public class Propriedade {
         this.comprada = false;
         this.comprador = null; 
         this.id = id;
+        this.casa = casa;
     }
   
 

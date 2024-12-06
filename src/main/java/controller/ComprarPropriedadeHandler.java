@@ -76,8 +76,6 @@ public class ComprarPropriedadeHandler implements HttpHandler {
         jogador.carregarJogador(fileName);
         return jogador;
     }
-
-        // Método para recuperar a propriedade pelo ID
     private Propriedade recuperarPropriedade(String idPropriedade) {
         // Converte o idPropriedade para inteiro (assumindo que idPropriedade é um String representando um número)
         int id = Integer.parseInt(idPropriedade);

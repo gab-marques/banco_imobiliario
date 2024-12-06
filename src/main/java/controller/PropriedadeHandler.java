@@ -34,7 +34,8 @@ public class PropriedadeHandler implements HttpHandler {
         propriedades.add(new Propriedade("Campo de Quadribol", 400, 21));
         propriedades.add(new Propriedade("Lago Negro", 300,22));
         propriedades.add(new Propriedade("Salão Principal de Hogwarts", 450,23));
-        propriedades.add(new Propriedade("Cabana do Lupin", 350, 24));       
+        propriedades.add(new Propriedade("Cabana do Lupin", 350, 24));  
+        propriedades.add(new Propriedade("Cabana do Lupin", 350, 25));     
     }
 
     @Override
@@ -48,7 +49,9 @@ public class PropriedadeHandler implements HttpHandler {
             Propriedade propriedade = propriedades.get(i);
             jsonResponse.append("{")
                     .append("\"nome\": \"").append(propriedade.getNome()).append("\", ")
-                    .append("\"preco\": ").append(propriedade.getPreco())
+                    .append("\"preco\": ").append(propriedade.getPreco()).append(", ")
+                    .append("\"id\": ").append(propriedade.getId()).append(", ")
+                    .append("\"comprada\": ").append(propriedade.estaComprada())
                     .append("}");
             
             if (i < propriedades.size() - 1) {

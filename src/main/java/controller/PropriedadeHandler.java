@@ -1,6 +1,8 @@
 package controller;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+
+import model.Jogador;
 import model.Propriedade;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -47,10 +49,13 @@ public class PropriedadeHandler implements HttpHandler {
         jsonResponse.append("[");     
         for (int i = 0; i < propriedades.size(); i++) {
             Propriedade propriedade = propriedades.get(i);
+            Jogador comprador = propriedade.getComprador();
+            Integer idJogador = (comprador != null) ? comprador.getId() : null;
             jsonResponse.append("{")
                     .append("\"nome\": \"").append(propriedade.getNome()).append("\", ")
                     .append("\"preco\": ").append(propriedade.getPreco()).append(", ")
                     .append("\"id\": ").append(propriedade.getId()).append(", ")
+                    .append("\"idComprador\": ").append(idJogador).append(", ")
                     .append("\"comprada\": ").append(propriedade.estaComprada())
                     .append("}");
             

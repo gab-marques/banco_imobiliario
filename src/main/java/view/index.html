@@ -14,7 +14,8 @@
             <p id="modalDescricao"></p>
             <p id="modalJogador"></p> 
             <button id="comprar" style="display: none;" onclick="comprarPropriedade()">Comprar</button>
-            <button id="pagarAluguelBtn" style="display: none;" >Pagar Aluguel</button>
+            <button id="pagarAluguelBtn" style="display: none;"  >Pagar Aluguel</button>
+            <button id="adicionarCasaBtn" style="display: none;" onclick="adicionarCasa()">Adicionar Casa</button>
         </div>
     </div>    
     
@@ -177,12 +178,21 @@ function mostrarModal(titulo, descricao, nomeJogador, idJogador, idPropriedade) 
             const propriedade = propriedades.find(p => p.id === idPropriedade);
 
             if (propriedade) {
-                if (propriedade.comprada === false) {
+                if (propriedade.comprada === false) {           
+                    console.log("id do comprador" + propriedade.idComprador);
                     comprar.style.display = "block"    
                     pagarAluguelBtn.style.display = "none"
-                } else {
+                    adicionarCasaBtn.style.display = "none"
+                } else if (propriedade.idComprador === idJogador){
+                    comprar.style.display = "none"
+                    pagarAluguelBtn.style.display = "none"
+                    adicionarCasaBtn.style.display = "block"
+                }
+                else{          
+                    console.log("id do comprador" + propriedade.idComprador);
                     comprar.style.display = "none"
                     pagarAluguelBtn.style.display = "block"
+                    adicionarCasaBtn.style.display = "none"
                 }
             } else {
                 
@@ -283,6 +293,31 @@ pagarAluguelBtn.onclick = () => {
     const modal = document.getElementById("modal");
     modal.style.display = "none";
 };
+
+function adicionarCasa() {
+    const idJogador = localStorage.getItem('idJogador');
+    const idPropriedade = localStorage.getItem('propriedadeSelecionada');
+
+    fetch(`/adicionarCasa?idJogador=${idJogador}&idPropriedade=${idPropriedade}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+    })
+    .then(response => response.text())
+    .then(data => {
+        alert(data); // Mensagem do servidor
+        console.log("Resposta do servidor:", data);
+
+        // Fechar o modal após adicionar a casa
+        const modal = document.getElementById("modal");
+        modal.style.display = "none";
+    })
+    .catch(error => {
+        console.error("Erro ao adicionar casa:", error);
+        alert("Erro ao adicionar casa.");
+    });
+}
 
 
 function selecionarPropriedade(nomePropriedade) {

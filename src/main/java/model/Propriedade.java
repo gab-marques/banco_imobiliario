@@ -8,7 +8,7 @@ public class Propriedade {
     private boolean hipotecada;
     private boolean comprada;
     private Jogador comprador;
-    private int casa;
+    private int casas;
     
 
     public Propriedade(String nome, double preco, int id) {
@@ -19,7 +19,7 @@ public class Propriedade {
         this.comprada = false;
         this.comprador = null; 
         this.id = id;
-        this.casa = casa;
+        this.casas = 0;
     }
   
 
@@ -43,14 +43,32 @@ public class Propriedade {
     public void setComprada(boolean comprada) {
         this.comprada = comprada;
     }
+  
     public boolean estaComprada() {
         return this.comprada;
     }
     public Jogador getComprador() {
         return this.comprador;
     }
+    
     public void setComprador(Jogador comprador) {
         this.comprador = comprador;
+    }
+    public int getCasas() {
+        return casas;
+    }
+
+    public void adicionarCasa() {
+        if (comprada) {
+            casas++;
+           } else {
+            System.out.println("A propriedade " + nome + " ainda não foi comprada.");
+        }
+    }
+    public double calcularAluguel() {
+        double aluguelBase = preco * 0.10;
+        double adicionalPorCasa = aluguelBase * 0.05 * casas; // 5% por casa
+        return aluguelBase + adicionalPorCasa;
     }
      // Método para hipotecar a propriedade
      public double hipotecar() {

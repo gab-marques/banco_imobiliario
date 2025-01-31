@@ -32,5 +32,5 @@ Este é um projeto de simulação do jogo Monopoly, desenvolvido utilizando Java
 1. Certifique-se de ter o [JDK 11 ou superior] instalado.
 2. Compile e execute o código Java:
    ```bash
-  make
-  make run
+    make
+    make run
